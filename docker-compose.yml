@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  nest-app:
+    build:
+      context: .
+    command: ['sh', '-c', 'npx prisma db push && yarn start:prod']
+    ports:
+      - '4000:4000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=${DATABASE_DOCKER_URL}
+    env_file:
+      - .env
+
+  postgres:
+    image: postgres:17.5
+    environment:
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${DATABASE_DB}
+    env_file:
+      - .env
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d ${DATABASE_DB}']
+      interval: 3s
+      timeout: 5s
+      retries: 3

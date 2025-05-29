@@ -1,6 +1,5 @@
 import { Global, HttpException, Injectable } from '@nestjs/common';
 import {
-  GetObjectAclCommand,
   GetObjectCommand,
   PutObjectCommand,
   S3Client,
