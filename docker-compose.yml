@@ -6,7 +6,7 @@ services:
       context: .
     command: ['sh', '-c', 'npx prisma db push && yarn start:prod']
     ports:
-      - '4000:4000'
+      - '80:4000'
     depends_on:
       postgres:
         condition: service_healthy
